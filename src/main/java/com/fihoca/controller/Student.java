@@ -6,6 +6,8 @@ import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletException;
 
+import com.liferay.portal.kernel.servlet.SessionErrors;
+import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.util.bridges.mvc.MVCPortlet;
 
@@ -20,12 +22,18 @@ public class Student extends MVCPortlet {
 		String apellido = ParamUtil.getString(actionRequest, "apellido");
 		int edad = ParamUtil.getInteger(actionRequest, "edad");
 		
-		String nombreCompleto = (nombre+apellido+edad);
-		
-		actionResponse.setRenderParameter("nombreCompleto", nombreCompleto);
-		
-		
-		
+		if (nombre!="" && apellido!="" && edad!=0) {
+
+				String nombreCompleto = ("El nombre del estudiante es " + nombre +" "+ apellido +" "+"y tiene " + edad +" años");
+				
+				actionResponse.setRenderParameter("nombreCompleto", nombreCompleto);
+				
+				SessionMessages.add(actionRequest, "success");
+			}else{
+			
+			SessionErrors.add(actionRequest, "error");
+
+		}		
 		
 	}
 
